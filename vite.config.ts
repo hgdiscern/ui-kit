@@ -1,37 +1,31 @@
+// vite.config.ts
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import dts from 'vite-plugin-dts'
-import path from 'path'
 
 export default defineConfig({
     plugins: [
         react(),
         dts({
+            outDir: 'dist/types',
             insertTypesEntry: true,
-            outDir: 'dist/types'
-        })
+        }),
     ],
     build: {
         lib: {
-            entry: path.resolve(__dirname, 'src/index.ts'),
-            name: 'components',
-            fileName: (format) => `index.${format}.js`
+            entry: 'src/index.ts',
+            name: 'ui-kit',
+            formats: ['es', 'umd'],
+            fileName: (format) => `index.${format}.js`,
         },
         rollupOptions: {
-            external: [
-                'react',
-                'react-dom',
-                'react/jsx-runtime',
-                '@mui/material',
-                '@emotion/react',
-                '@emotion/styled'
-            ],
+            external: ['react', 'react-dom'],
             output: {
                 globals: {
                     react: 'React',
-                    'react-dom': 'ReactDOM'
-                }
-            }
-        }
-    }
+                    'react-dom': 'ReactDOM',
+                },
+            },
+        },
+    },
 })
